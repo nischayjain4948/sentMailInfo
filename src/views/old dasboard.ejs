@@ -1,0 +1,265 @@
+<%- include('header') %>
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h4 class="text-themecolor">Dashboard </h4>
+                </div>
+                <div class="col-md-7 align-self-center text-right">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <ol class="breadcrumb">
+
+                            <li class="breadcrumb-item active">Dashboard </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+             <div class="row">
+                <!-- Column -->
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Connect to HubSpot</h3>
+                            <div class="text-center mb-2"><img src="/assets/img/crm1.png" alt=""
+                                class="border rounded"></div>
+                        <div class="syncdata-log" style="text-align: center;">
+                            <p class="lead redirectToLead"></p>
+                            <script>
+                                window.addEventListener("load", function () {
+                                    let param = getQueryParams();
+                                    console.log(param, "data");
+                                    if (param.hvrif) {
+                                        $(".redirectToLead").html(
+                                            `<a class="btn waves-effect waves-light btn-warning" href='/api/auth/hubspot${location.search}'>Change HubSpot Account</a>
+          `
+                                        );
+                                    } else {
+                                        $(".redirectToLead").html(
+                                              `<a href='/api/auth/hubspot'  class="btn waves-effect waves-light btn-info " >Connect HubSpot</a>`
+                                        );
+                                    }
+                                });
+                            </script>
+                              <label>
+                                   
+                                <p class="text-success dynamics365_rs_url" ><b class="dynamics365_rs_url">Portal Id : <%= store.hub_id %></b>
+                                    <br> <b>HubSpot Token is verified.</b>
+                                </p>
+                        </label>
+                        </div>
+                    </div>
+                </div>
+                        <div id="sparkline8" class="sparkchart"><canvas width="346" height="50" style="display: inline-block; width: 346.328px; height: 50px; vertical-align: top;"></canvas></div>
+                    </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Company Syncing</h5>
+                            <div class="row">
+                                <div class="col-sm-12 mt-4 row mb-3">
+                                    <div class="col-sm-10">
+                                    you can Turn <b class="servicesUpdatedlabel">
+                                        <%= store.duser.AllSyncingStatus ? 'OFF' :'ON' %>
+                                    </b> all the syncing services from here.</div>
+                                    <div class="col-sm-2 text-center ">
+
+                                        <div class="sync-action">
+                                            <input type="checkbox"  class="js-switch" data-color="green"
+                                                data-size="small" <%=store.duser.AllSyncingStatus ? 'checked' :'' %>
+                                            onclick="toogleHubSageFieldOption(this)" id="switch2" />
+                                            <label for="switch2"></label>
+                                        </div>
+                                </div>
+                               
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">User Details</h5>
+
+                            <div class="users_row">
+                                <% store.users.forEach(fr=>{ %>
+                                    <div class="col-sm-12 ">
+                                        <div class="enquiry-block default__box">
+                                            <!-- <h5 class="t_heading2">HubSpot</h5> -->
+                                            <ul class="info-pro">
+                                                <li><span>Name :</span>
+                                                    <%= fr.firstname + ' ' + fr.lastname %>
+                                                </li>
+                                                <li><span>Email :</span>
+                                                    <%= fr.email %>
+                                                </li>
+
+                                            </ul>
+
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Contact Syncing</h5>
+                            <div class="row">
+                                <!-- <div class="row synft"> -->
+                                <div class="col-sm-12 mt-4 row mb-3">
+                                    <div class="col-sm-10">
+                                    you can Turn <b class="servicesUpdatedlabel">
+                                        <%= store.duser.autoSyncing ? 'OFF' :'ON' %>
+                                    </b> all the syncing services from here.</div>
+                                    <div class="col-sm-2 text-center ">
+
+                                        <div class="sync-action">
+                                            <input type="checkbox"  class="js-switch" data-color="green"
+                                                data-size="small" <%=store.duser.autoSyncing ? 'checked' :'' %>
+                                            onclick="toogleHubSageFieldOptionContact(this)" id="switch3" />
+                                            <label for="switch2"></label>
+                                        </div>
+                                </div>
+                               
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Deal Syncing</h5>
+                            <div class="row">
+                                <!-- <div class="row synft"> -->
+                                <div class="col-sm-12 mt-4 row mb-3">
+                                    <div class="col-sm-10">
+                                    you can Turn <b class="servicesUpdatedlabel">
+                                        <%= store.duser.DealSyncingStatus ? 'OFF' :'ON' %>
+                                    </b> all the syncing services from here.</div>
+                                    <div class="col-sm-2 text-center ">
+
+                                        <div class="sync-action">
+                                            <input type="checkbox"  class="js-switch" data-color="green"
+                                                data-size="small" <%=store.duser.DealSyncingStatus ? 'checked' :'' %>
+                                            onclick="toogleHubSageFieldOptionDeal(this)" id="switch4" />
+                                            <label for="switch4"></label>
+                                        </div>
+                                </div>
+                               
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Product Syncing</h5>
+                            <div class="row">
+                                <!-- <div class="row synft"> -->
+                                <div class="col-sm-12 mt-4 row mb-3">
+                                    <div class="col-sm-10">
+                                    you can Turn <b class="servicesUpdatedlabel">
+                                        <%= store.duser.ProductSyncingStatus ? 'OFF' :'ON' %>
+                                    </b> all the syncing services from here.</div>
+                                    <div class="col-sm-2 text-center ">
+
+                                        <div class="sync-action">
+                                            <input type="checkbox"  class="js-switch" data-color="green"
+                                                data-size="small" <%=store.duser.ProductSyncingStatus ? 'checked' :'' %>
+                                            onclick="toogleHubSageFieldOptionProduct(this)" id="switch5" />
+                                            <label for="switch5"></label>
+                                        </div>
+                                </div>
+                               
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Invoice Syncing</h5>
+                            <div class="row">
+                                <!-- <div class="row synft"> -->
+                                <div class="col-sm-12 mt-4 row mb-3">
+                                    <div class="col-sm-10">
+                                    you can Turn <b class="servicesUpdatedlabel">
+                                        <%= store.duser.InvoicesSyncingStatus ? 'OFF' :'ON' %>
+                                    </b> all the syncing services from here.</div>
+                                    <div class="col-sm-2 text-center ">
+
+                                        <div class="sync-action">
+                                            <input type="checkbox"  class="js-switch" data-color="green"
+                                                data-size="small" <%=store.duser.InvoicesSyncingStatus ? 'checked' :'' %>
+                                            onclick="toogleHubSageFieldOptionInvoice(this)" id="switch6" />
+                                            <label for="switch6"></label>
+                                        </div>
+                                </div>
+                               
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+
+            </div>
+            
+
+        </div>
+    </div>
+    <a id="back-to-top" href="#" class="back-to-top"> <i class="fa fa-chevron-up"></i> </a>
+    <!-- scroll Top End -->
+    <div class="sidebar thread-mail-box mySidebar"> <a href="javascript:void(0)"
+            class="js-open-sidethread closebtn">×</a>
+    </div>
+    <style>
+        .btn-warning {
+    background-color: #01c0c8;
+    border-color: #01c0c8;
+}
+    </style>
+    <script>
+        $(function () {
+            // Switchery
+            var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+            $('.js-switch').each(function () {
+                
+                new Switchery($(this)[0], $(this).data());
+
+            });
+        })
+    </script>
+
+    <%- include('footer') %>
+    <script src="/assets/js/pages/appdashboard.js"></script>

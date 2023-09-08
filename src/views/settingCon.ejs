@@ -1,0 +1,173 @@
+<%- include('header') %>
+
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h4 class="text-themecolor">Mail Setting</h4>
+                </div>
+                <div class="col-md-7 align-self-center text-right">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#"
+                                    onclick="location.href='/appdashboard'+location.search">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Mail Setting</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10 mx-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <form class="mt-4" id="mailSettingForm">
+                                <div class="form-group">
+                                    <div class="col-xs-10">
+                                        <span>SMTP</span>
+                                        <input class="form-control" type="text" id="smpt" name="smpt" placeholder=""
+                                            value="nischay.jain@dotsquares.com" required readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <span>HostName</span>
+                                        <input class="form-control" type="email" value="" id="HostName" name="HostName"
+                                            placeholder="host@dotsquares.com" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <span>PORT</span>
+                                        <input class="form-control" type="number" value="" id="port" name="port"
+                                            placeholder="27017" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <span>From</span>
+                                        <input class="form-control" type="email" value="" id="from" name="from"
+                                            placeholder="test@mail.com" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <span>User</span>
+                                        <input class="form-control" type="text" value="" id="user" name="user"
+                                            placeholder="Dotsquares" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <span>Password</span>
+                                        <input class="form-control" type="password" value="" id="password"
+                                            name="password" placeholder="27017" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <div class="col-xs-12 p-b-20">
+                                        <button class="btn btn-lg btn-primary" id="edit-profile">Update
+                                            Mail Setting</button>
+                                    </div>
+                                    <span id="serverResponse"></span>
+                                </div>
+
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+                <script>
+                    $(document).ready(function () {
+                        // Define your validation rules
+                        $("#mailSettingForm").validate({
+                            errorClass: "error", // Apply the error class for styling
+                            rules: {
+                                HostName: {
+                                    required: true,
+                                    email: true,
+                                },
+                                port: {
+                                    required: true,
+                                    digits: true,
+                                },
+                                from: {
+                                    required: true,
+                                    email: true,
+                                },
+                                user: {
+                                    required: true,
+                                },
+                                password: {
+                                    required: true,
+                                },
+                            },
+                            messages: {
+                                HostName: {
+                                    required: "Please enter a valid email address for HostName.",
+                                    email: "Please enter a valid email address for HostName.",
+                                },
+                                port: {
+                                    required: "Please enter a valid port number.",
+                                    digits: "Please enter a valid port number (digits only).",
+                                },
+                                from: {
+                                    required: "Please enter a valid email address for From.",
+                                    email: "Please enter a valid email address for From.",
+                                },
+                                user: {
+                                    required: "Please enter a user name.",
+                                },
+                                password: {
+                                    required: "Please enter a password.",
+                                },
+                            },
+                            submitHandler: function (form) {
+                                var isConfirmed = window.confirm("Are you sure you want to update the settings?");
+                                if (isConfirmed) {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "http://localhost:3000/savemailsettings",
+                                        data: $(form).serialize(),
+                                        success: function (response) {
+                                            alert("Form submitted successfully!");
+                                            console.log(response);
+                                        },
+                                        error: function (error) {
+                                            alert("Error: " + error.statusText);
+                                        }
+                                    });
+                                }
+
+                            }
+                        });
+
+                        // Add a click event handler for the update button
+                        $("#updateMailSetting").click(function () {
+                            // Trigger form validation
+                            $("#mailSettingForm").valid();
+                        });
+                    });
+                </script>
+
+
+
+
+
+                <%- include('footer') %>

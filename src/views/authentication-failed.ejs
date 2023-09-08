@@ -1,0 +1,15 @@
+<div class="container">
+  <h2 class="text-center">Authentication Failed</h2>
+</div>
+<script type="text/javascript">
+    if (window.opener) {
+        window.opener.focus();
+
+      if(window.opener.loginCallBack) {
+        window.opener.loginCallBack();
+      }
+    }
+    setTimeout(() => {
+      window.close();
+    }, 2000);
+</script>

@@ -1,0 +1,222 @@
+<%- include('header') %>
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.4.1/css/dataTables.dateTime.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.4.1/js/dataTables.dateTime.min.js"></script>
+
+
+<style>
+    .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+    padding: 0 25px;
+    background-color: #ffff;
+}
+</style>
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Column for Start Date -->
+                <div class="col-lg-2">
+                  <table border="0" cellspacing="5" cellpadding="5">
+                    <tbody>
+                      <tr>
+                        <td>Start date</td>
+                        <td><input type="text" id="min" name="min"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- Column for End Date -->
+                <div class="col-lg-2">
+                  <table border="0" cellspacing="5" cellpadding="5">
+                    <tbody>
+                      <tr>
+                        <td>End date</td>
+                        <td><input type="text" id="max" name="max"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-lg-4" style="margin-top: 10px">
+                  <!-- <a href="/logs" class="btn btn-primary">Reset</a> -->
+                </div>
+              </div>
+            
+              
+            <table id="example" class="display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+  
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                          
+                                <div class="modal-body">
+                                    <!-- Add content here -->
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <% logdata.forEach(function(data,i) { %>
+
+                        <tr>
+                            <td>
+                                <%= i + 1 %>
+                            </td>
+                            <td>
+                                <% if (data.status==='Success' ) { %>
+                                    <span class="label label-success">Success</span>
+                                    <% } else { %>
+                                        <span class="label label-danger">Error</span>
+                                        <% } %>
+                            </td>
+                            <td>
+                                <%= data.createdAt.toISOString().slice(0, 10) %>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary" href="#" onclick="openModal('<%= data._id %>')" role="button"><i class="fa fa-eye" aria-hidden="true"></i></a>
+
+                                <!-- <a class="btn btn-primary" href="/viewuser/<%= data._id %>" role="button"><i class="fa fa-eye" aria-hidden="true"></i></a>  -->
+                            </td>
+                        </tr>
+
+                        <% }); %>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+   
+    <script>
+        function openModal(id) {
+          // Retrieve the modal element
+          var modal = $('#myModal');
+      
+          // Add code to populate the modal with data based on the ID value
+      
+          // Open the modal
+          modal.modal('show');
+          $.ajax({
+            url: "/viewuser/" + id, // Concatenate the id to the URL
+            method: "GET",
+            success: function (data) {
+              console.log("deepak", data);
+              // Update the modal content with the data
+              var modal = document.getElementById("myModal");
+              var modalContent = modal.querySelector(".modal-content");
+      
+              // Format createdAt as "2023-05-25T05:16 PM"
+              var createdAt = new Date(data.logdata[0].createdAt);
+              var formattedCreatedAt = createdAt.toLocaleString('en-US', {
+                                                        year: 'numeric' , month: '2-digit' , day: '2-digit' ,
+                                                        hour: 'numeric' , minute: 'numeric'  ,
+                                                        hour12: true });
+             
+              modalContent.innerHTML = `
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title" id="myLargeModalLabel">Log Info - ${data.logdata[0].status} - ${data.logdata[0].source} - sync from ${data.logdata[0].from} to ${data.logdata[0].to}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="m-t-0">Status: ${data.logdata[0].status}</label>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="m-t-0">Create Date: ${formattedCreatedAt}</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="m-t-0">From: ${data.logdata[0].from}</label>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="m-t-0">To: ${data.logdata[0].to}</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="m-t-0">Source: ${data.logdata[0].source}</label>
+                      </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <label class="m-t-0">Message: ${data.logdata[0].message}</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn waves-effect waves-light btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              `;
+      
+              // Display the modal
+      
+              // Add event listener to close button
+            },
+            error: function (err) {
+              console.log("error", err);
+              Swal.fire("This UniqueId already created", err, "error");
+            },
+          });
+        }
+      </script>
+      
+    <script>
+        var minDate, maxDate;
+
+        // Custom filtering function which will search data in column four between two values
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var min = minDate.val();
+                var max = maxDate.val();
+                var date = new Date(data[2]);
+
+                if (
+                    (min === null && max === null) ||
+                    (min === null && date <= max) ||
+                    (min <= date && max === null) ||
+                    (min <= date && date <= max)
+                ) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        $(document).ready(function () {
+            // Create date inputs
+            minDate = new DateTime($('#min'), {
+                format: 'MMMM Do YYYY'
+            });
+            maxDate = new DateTime($('#max'), {
+                format: 'MMMM Do YYYY'
+            });
+
+            // DataTables initialisation
+            var table = $('#example').DataTable({
+        "paging": true, // Enable pagination
+        "pageLength": 10, // Number of rows per page
+        "lengthMenu": [10, 25, 50, 75, 100], // Dropdown options for rows per page
+    });
+
+    // Refilter the table
+    $('#min, #max').on('change', function () {
+        table.draw();
+    });v
+        });
+    </script>
+    <%- include('footer') %>

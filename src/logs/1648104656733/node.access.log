@@ -1,0 +1,58 @@
+[1m[33mserver listen at 3005 port[39m[22m
+[1m[36mMongoDB Connected[39m[22m
+{
+  _id: 622f3799f9a19e225835c0f0,
+  reset_password_token: '',
+  token_used: '',
+  hubdealtosage: false,
+  autoSyncing: true,
+  AllSyncingStatus: true,
+  EmailSyncingStatus: false,
+  lastemailsent: 2022-03-14T12:39:37.029Z,
+  fetchedMercuryLastContactTime: 2022-03-24T06:34:04.642Z,
+  fetchedMercuryLastContactTimeCompany: 2022-03-24T06:46:03.973Z,
+  cronSyncingBusyStatus: false,
+  cronSyncingBusyStatusCompany: false,
+  firstname: 'Anmol',
+  lastname: 'Mathur',
+  email: 'mathur.anmol@dotsquares.com',
+  password: '$2a$10$07IrCD74SWBfsQ2qnuPgCO8nhiVdw2t32t3AhksaSzEZnkGYcK/.m',
+  dynamicsresourceurl: 'https://api.businesscentral.dynamics.com',
+  createdAt: 2022-03-14T12:39:53.467Z,
+  updatedAt: 2022-03-24T06:46:03.975Z,
+  app_id: '787245',
+  hub_domain: 'www.trucorp.com',
+  hub_id: '25190753',
+  token_type: 'access',
+  user_id: '12758316'
+}
+I'm intercepting axios call
+no company found to sync for user :
+{
+  _id: 622f3799f9a19e225835c0f0,
+  reset_password_token: '',
+  token_used: '',
+  hubdealtosage: false,
+  autoSyncing: true,
+  AllSyncingStatus: true,
+  EmailSyncingStatus: false,
+  lastemailsent: 2022-03-14T12:39:37.029Z,
+  fetchedMercuryLastContactTime: 2022-03-24T06:34:04.642Z,
+  fetchedMercuryLastContactTimeCompany: 2022-03-24T06:46:03.973Z,
+  cronSyncingBusyStatus: false,
+  cronSyncingBusyStatusCompany: false,
+  firstname: 'Anmol',
+  lastname: 'Mathur',
+  email: 'mathur.anmol@dotsquares.com',
+  password: '$2a$10$07IrCD74SWBfsQ2qnuPgCO8nhiVdw2t32t3AhksaSzEZnkGYcK/.m',
+  dynamicsresourceurl: 'https://api.businesscentral.dynamics.com',
+  createdAt: 2022-03-14T12:39:53.467Z,
+  updatedAt: 2022-03-24T06:46:03.975Z,
+  app_id: '787245',
+  hub_domain: 'www.trucorp.com',
+  hub_id: '25190753',
+  token_type: 'access',
+  user_id: '12758316'
+}
+I'm intercepting axios call
+no company found to sync for user :

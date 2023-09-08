@@ -1,0 +1,371 @@
+
+<%- include('header') %>
+<link href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href=
+'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/
+ui-lightness/jquery-ui.css'
+        rel='stylesheet'>
+<style>
+    table.dataTable thead .sorting_asc {
+     background-image: url(../images/sort_asc.png) !important; 
+}
+table.dataTable thead .sorting {
+    background-image: url(../images/sort_both.png);
+}
+</style>
+<div class="page-wrapper">
+    <div class="container-fluid">
+        <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h4 class="text-themecolor">Manage Logs</h4>
+            </div>
+            <div class="col-md-7 align-self-center text-right">
+                <div class="d-flex justify-content-end align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a onclick="location.href='/appdashboard'+location.search">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Manage Logs</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Column -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="trigger-page sec_space">
+                            <!--tab module-->
+                            <div class="container" style="max-width: calc(100%)">
+                                <div class="tab-content">
+                                    <div class="default__box">
+                                        <div class="row">
+                                            <div class="table-responsive m-t-40 data-logs">
+                                                <table id="table1" class="table table-hover no-wrap" datatable="table1">
+                                                    <thead >
+                                                        <tr style="height: 50px;">
+                                                            <th scope="col">Sr No</th>
+                                                            <!-- <th scope="col">Type</th> -->
+                                                            <th scope="col">Status</th>
+                                                            <!-- <th scope="col">Message</th> -->
+                                                            <!-- <th scope="col">From</th> -->
+                                                            <!-- <th scope="col">To</th> -->
+                                                            <th scope="col">Date</th>
+                                                            <!-- <th scope="col">Source</th> -->
+                                                            <th scope="col">Action</th>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                  <div class="modal-dialog modal-lg">
+                                                      <div class="modal-content">
+                                                    
+                                                          <div class="modal-body">
+                                                              <!-- Add content here -->
+                                                          </div>
+                                                          <div class="modal-footer">
+                                                              <button type="button" class="btn btn-danger waves-effect text-left" data-dismiss="modal">Close</button>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('footer') %>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"defer></script>
+      
+        <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" >
+    </script>
+      
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" >
+    </script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+<script>
+    minDate = moment().utcOffset("+01:00").format('YYYY-MM-DD');
+    maxDate = moment().utcOffset("+01:00").format('YYYY-MM-DD');
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            var min = new Date(minDate).getTime();
+            var max = new Date(maxDate).getTime();
+            var date = new Date(data[7]).getTime();
+
+            if (
+                (min === null && max === null) ||
+                (min === null && date <= max) ||
+                (min <= date && max === null) ||
+                (min <= date && date <= max)
+            ) {
+                return true;
+            }
+            return false;
+        }
+    );
+    $(document).ready(function () {
+        console.log("working");
+        $('#table1 thead tr').clone(true).appendTo('#table1 thead');
+        $('#table1 thead tr:eq(1) th').each(function (i) {
+            var title = $(this).text();
+            console.log(title)
+            if (!title.includes("Sr No")) { $(this).html('<input class="form-control filter_fields" id="filter' + i + '" style="min-width:10rem !important" type="text" col_filter_num="' + i + '" placeholder="Search ' + title + '" />'); } else {
+                $(this).html('');
+            }
+
+            if (title.includes("Date")) { $(this).html('<input class="form-control filter_fields" name="datefilter_logs" id="filter' + i + '" style="min-width:10rem !important" type="text" col_filter_num="' + i + '" placeholder="Datefilter ' + title + '" />'); }
+           
+            if (title.includes("Type")) { $(this).html(''); }
+
+            if (title.includes("From")) { $(this).html(''); }
+
+         //   if (title.includes("To")) { $(this).html('<select class="form-control filter_fields" name="datefilter_logs" id="filter' + i + '" style="min-width:10rem !important" type="text" col_filter_num="' + i + '"> <option value="" disabled selected>Select To</option><option>Myenergi</option><option>HubSpot</option></select>'); }
+
+            if (title.includes("Status")) { $(this).html('<select class="form-control filter_fields" name="datefilter_logs" id="filter' + i + '" style="min-width:10rem !important" type="text" col_filter_num="' + i + '"> <option value="" disabled selected>Select Status</option><option>Success</option><option>Error</option></select>'); }
+
+          //  if (title.includes("Source")) { $(this).html(''); }
+            
+            document.body.onkeyup = function(e){
+                if(e.keyCode == 32){
+                    window.location.reload();
+                }
+            }
+
+            $('select.filter_fields', this).on('keyup change', function () {
+                if (table.column(i).search() !== this.value) {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                    table_paginate(table);
+                }
+            });
+        
+            $('input.filter_fields', this).on('keyup change', function () {
+                if (table.column(i).search() !== this.value) {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                    table_paginate(table);
+                }
+            });
+        });
+
+        var table = $('#table1').DataTable({
+    "paging": true,
+    "pageLength": 100,
+    "processing": true,
+    "serverSide": true,
+    "ordering": true,
+    "autoWidth": false,
+    "scrollY": "500px",
+    "scrollCollapse": true,
+    "orderCellsTop": true,
+    "fixedHeader": true,
+    "scrollX": true,
+    "fixedColumns": {
+        "heightMatch": 'none'
+    },
+    'ajax': {
+        'type': 'GET',
+        'crossDomain': true,
+        'url': '/populateData' + location.search+`&from=${minDate}&to=${maxDate}`,
+    },
+    'columns':
+        [
+            { 'data': 'sno', "defaultContent": "", 'name': 'Sr No' },
+         //   { 'data': 'ago', "defaultContent": "", 'name': 'ago', 'searchable': true },
+            // { 'data': 'type', "defaultContent": "", 'name': 'type', 'searchable': true },
+            { 'data': 'status', "defaultContent": "", 'name': 'status', 'searchable': true, render: function (data,type,row){
+                console.log(data)
+                        if(data == 'success' || data == 'Success') {
+                            return "<span class='badge bg-success text-white'>"+data+"</div>";
+                        } else {
+                            return "<span class='badge bg-danger text-white'>"+data+"</div>";
+                        }
+                    }
+                },
+         //   { 'data': 'message', "defaultContent": "", 'name': 'message' },
+            // { 'data': 'from', "defaultContent": "", 'name': 'from', 'searchable': true },
+         //   { 'data': 'to', "defaultContent": "", 'name': 'to', 'searchable': true },
+            { 'data': 'createdAt', "defaultContent": "", 'name': 'Date', 'searchable': true },
+            {
+          'data': 'action',
+          "defaultContent": "",
+          'name': 'action',
+          render: function (data, type, row) {
+            console.log("datassssssss",row._id)
+            return `<a class="btn btn-primary" href="#" onclick="openModal()" role="button"><i class="fa fa-eye" aria-hidden="true"></i></a>`;
+          }
+        }
+            // { 'data': 'source', "defaultContent": '', 'name': 'source', render : function (data,type,row){
+              
+            //   if (data !== "" ){
+            //          return '<a href="#" onclick="showModal(`'+data+'`)"><u>Show Source Error</u></a>';
+            //   }
+           
+            // },editField:['source'] }
+        ],
+    "columnDefs": [
+        {
+            "searchable": true,
+            "orderable": true,
+            "targets": 1
+        }
+    ]
+});
+
+
+function filterColumn(i) {
+    //      $('#' + field_input_table).DataTable().column( i ).search($('#' + field_input_table + '_col'+i+'_filter').val(), 'on', 'on').draw();
+    $('#table1').DataTable().draw();
+}
+
+$(document).ready(function () {
+    $(".column_filter").change(function () {
+        field_input_table = $(this).parents('div').attr('datatable');
+        filterColumn($(this).attr('col_filter_num'));
+    });
+});
+
+$('input[name="datefilter_logs"]').daterangepicker();
+
+$('input[name="datefilter_logs"]').on('apply.daterangepicker', function (ev, picker) {
+    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+    minDate = picker.startDate.format('YYYY-MM-DD');
+    maxDate = picker.endDate.format('YYYY-MM-DD');
+    // $('.loading').show();
+    let dt = {minDate,maxDate}
+    table.columns(7).search(JSON.stringify(dt))
+    $('#table1').DataTable().ajax.reload()
+});
+
+$('input[name="datefilter_logs"]').on('cancel.daterangepicker', function (ev, picker) {
+    $(this).val('');
+    minDate = moment().utcOffset("+01:00").format('YYYY-MM-DD');
+    maxDate = moment().utcOffset("+01:00").format('YYYY-MM-DD');
+    table.draw();
+    // table_paginate(table);
+});
+
+
+});
+
+window.addEventListener("load", function () {
+$(".sideModal").append(
+    dynamicBootstrapModal({
+        id: "show-complete-source-log",
+        modal: "modal modal-full-cont fade",
+        dialog: "modal-dialog ",
+        title: "Error Source Code",
+        body: ` 
+                    <div class="row" style="overflow: auto; height: 500px;">
+                    <div class="col-sm-12">
+                    </div>
+                    <div class="col-md-12">
+                        <p class="dynamicerrordata">
+                        </p>
+                    </div>
+                    </div>
+                    `,
+    })
+);
+});
+
+function showModal(data) {
+$("#show-complete-source-log .dynamicerrordata").html(data)
+$("#show-complete-source-log").modal();
+}
+</script>
+<script>
+  function openModal(id) {
+    // Retrieve the modal element
+    console.log("id",id)
+    return
+    var modal = $('#myModal');
+
+    // Add code to populate the modal with data based on the ID value
+
+    // Open the modal
+    modal.modal('show');
+    $.ajax({
+      url: "/viewuser/" + id, // Concatenate the id to the URL
+      method: "GET",
+      success: function (data) {
+        console.log("deepak", data);
+        return
+        // Update the modal content with the data
+        var modal = document.getElementById("myModal");
+        var modalContent = modal.querySelector(".modal-content");
+
+        // Format createdAt as "2023-05-25T05:16 PM"
+        var createdAt = new Date(data.logdata[0].createdAt);
+        var formattedCreatedAt = createdAt.toLocaleString('en-US', {
+                                                  year: 'numeric' , month: '2-digit' , day: '2-digit' ,
+                                                  hour: 'numeric' , minute: 'numeric'  ,
+                                                  hour12: true });
+       
+        modalContent.innerHTML = `
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myLargeModalLabel">Log Info - ${data.logdata[0].status} - ${data.logdata[0].source} - sync from ${data.logdata[0].from} to ${data.logdata[0].to}</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="m-t-0">Status: ${data.logdata[0].status}</label>
+                </div>
+                <div class="col-md-6">
+                  <label class="m-t-0">Create Date: ${formattedCreatedAt}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="m-t-0">From: ${data.logdata[0].from}</label>
+                </div>
+                <div class="col-md-6">
+                  <label class="m-t-0">To: ${data.logdata[0].to}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="m-t-0">Source: ${data.logdata[0].source}</label>
+                </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <label class="m-t-0">Message: ${data.logdata[0].message}</label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn waves-effect waves-light btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        `;
+
+        // Display the modal
+
+        // Add event listener to close button
+      },
+      error: function (err) {
+        console.log("error", err);
+        Swal.fire("This UniqueId already created", err, "error");
+      },
+    });
+  }
+</script>
+

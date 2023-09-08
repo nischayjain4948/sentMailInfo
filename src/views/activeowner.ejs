@@ -1,0 +1,57 @@
+<%- include('header') %>
+    <style>
+        .custom-padding {
+            padding: 10px;
+        }
+    </style>
+
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h4 class="text-themecolor">Active Owner</h4>
+                </div>
+                <div class="col-md-7 align-self-center text-right">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#"
+                                    onclick="location.href='/appdashboard'+location.search">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Active Owner</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10 mx-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title"></h4>
+                            <h6 class="card-subtitle">Please choose a owner</h6>
+                            <form class="mt-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Active Owners</label>
+                                    <select class="form-control custom-select-sm custom-padding">
+                                        <option selected>Please choose a owner List</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                                <div class="custom-control custom-checkbox mr-sm-2 mb-3">
+                                    <input type="checkbox" class="custom-control-input" id="checkbox0" value="check">
+                                    <label class="custom-control-label" for="checkbox0">Only for Testing mail</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- scroll Top End -->
+
+
+
+    <%- include('footer') %>
